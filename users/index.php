@@ -10,6 +10,8 @@
             background-color: black;
             color: greenyellow;
             font-family: 'Courier New', Courier, monospace;
+            margin: auto 60px;
+            border: solid white;
         }
     </style>
 </head>
@@ -88,6 +90,7 @@
             estado.innerText = user.estado == true ? 'Activado' : 'Desactivado';
             acciones.innerHTML = `
             <button onclick="ver(${user.id})">Ver</button>
+            <button onclick="editar(${user.id})">Editar</button>
             `;
 
             tr.appendChild(id);
@@ -118,6 +121,7 @@
         };
         listaUsuarios.push(nuevo);
         listar();
+        
     }
 
     function ver(_id){
@@ -146,7 +150,56 @@
         `;
 
         showInfoUsuario.appendChild(tabla);
+        document.getElementById('formulario').style.display = 'none';
     }
+
+    function editar(_id){
+        const user = listaUsuarios.find(u => u.id == _id);
+        let indice = listaUsuarios.findIndex(function(user){
+            return user.id === _id;
+        });
+
+        const showInfoUsuario = document.getElementById('showInfoUsuario');
+        showInfoUsuario.innerHTML= '<h2>Info del Usuario</h2>';
+        const tabla = document.createElement('table');
+        tabla.innerHTML = `
+        <tr> 
+            <td>Identificador</td>
+            <td>${user.id}</td>
+        </tr>
+        <tr> 
+            <td>Username</td>
+            <td><input type="text" id="editUsername" placeholder="Ingrese Username" value="${user.username}"></td>
+        </tr>
+        <tr> 
+            <td>Nombre</td>
+            <td><input type="text" id="editNombre" placeholder="Ingrese Nombre" value="${user.nombre}"></td>
+        </tr>
+        <tr> 
+            <td>Estado</td>
+            <td>${user.estado}</td>
+        </tr>
+        <tr>
+            <td><button onClick="guardarCambio(${indice})";>Guardar</button></td>
+            <p>${indice}</p>
+        </tr>
+        `;
+
+        showInfoUsuario.appendChild(tabla);
+    }
+
+    function guardarCambio(indice){
+        const userName = document.getElementById("editUsername").value;
+        const nombreUsuario = document.getElementById("editNombre").value;
+        listaUsuarios[indice].username = userName;
+        listaUsuarios[indice].nombre = nombreUsuario;
+        alert("Usuario editado con exito!");
+        listar();
+        ver(listaUsuarios[indice].id);
+    };
 </script>
 
+
+
 </html>
+
